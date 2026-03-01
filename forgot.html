@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reset Password</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
+}
+.container{
+    background:white;
+    padding:35px;
+    width:100%;
+    max-width:400px;
+    border-radius:12px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.2);
+}
+h2{text-align:center;margin-bottom:20px;}
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#2a5298;
+    color:white;
+    cursor:pointer;
+}
+button:hover{background:#1e3c72;}
+.eye{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+}
+.input-group{
+    position:relative;
+}
+p{text-align:center;margin-top:15px;}
+a{color:#2a5298;text-decoration:none;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Reset Password</h2>
+
+<input type="email" id="email" placeholder="Enter Registered Email">
+
+<div class="input-group">
+    <input type="password" id="newPassword" placeholder="New Password">
+    <span class="eye" onclick="togglePassword()">👁</span>
+</div>
+
+<button onclick="resetPassword()">Update Password</button>
+
+<p><a href="login.html">Back to Login</a></p>
+</div>
+
+<script>
+function togglePassword(){
+    const input = document.getElementById("newPassword");
+    input.type = input.type === "password" ? "text" : "password";
+}
+
+function resetPassword(){
+    let email = document.getElementById("email").value.trim();
+    let newPassword = document.getElementById("newPassword").value.trim();
+
+    if(!email || !newPassword){
+        alert("All fields required!");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    let userIndex = users.findIndex(user => user.email === email);
+
+    if(userIndex === -1){
+        alert("Email not registered!");
+        return;
+    }
+
+    users[userIndex].password = newPassword;
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Password updated successfully!");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
